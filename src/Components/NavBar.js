@@ -60,7 +60,7 @@ const NavBar = (props) => {
             </div>
             :
             
-            <Avatar className={classes.orangeAvatar} component={Link} to="/tasks">{props.user.name.charAt(0).toUpperCase()}</Avatar>
+            <Avatar className={classes.orangeAvatar} component={Link} to="/profile">{props.user.name.charAt(0).toUpperCase()}</Avatar>
 
           }
         </Toolbar>
