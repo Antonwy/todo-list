@@ -4,22 +4,32 @@ import NavBar from './Components/NavBar'
 import TodoList from './Components/TodoList';
 import LogIn from './Components/LogIn'
 import Register from './Components/Register'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { Route } from 'react-router-dom'
+import Profile from './Components/Profile'
 
 
 
-const App = () => {
+class App extends React.Component {
 
-  return (
-    <Router>
+  constructor(props){
+    super(props);
+    this.state = {
+      logedIn: false
+    }
+    
+  }
+
+  render(){
+    return (
       <div>
         <NavBar />
-        <Route exact path="/" component={TodoList} />
-        <Route path="/login" component={LogIn} />
+        <Route exact path="/" component={LogIn} />
+        <Route path="/tasks" component={TodoList} />
         <Route path="/register" component={Register} />
+        <Route path="/profile" component={Profile} />
       </div>
-    </Router>
-  )
+    )
+  }
   
 }
 

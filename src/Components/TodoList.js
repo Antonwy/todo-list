@@ -68,6 +68,11 @@ class TodoList extends Component {
     }
 
     componentDidMount(){
+
+        if(!this.props.user.id){
+            this.props.history.push('/')
+        }
+
         this.props.getTasks();
     }
 
@@ -108,6 +113,15 @@ class TodoList extends Component {
         })
     }
 
+    renderListItems = (value, i) => {
+        const { taskList } = this.props;
+        const { editMode } = this.state;
+
+        return (i === taskList.length -1 ?
+        <TodoListItem newOne={true} checked={value.checked} text={value.todo} editMode={editMode} id={value.id} key={value.id}/>
+        : <TodoListItem newOne={false} checked={value.checked} text={value.todo} editMode={editMode} id={value.id} key={value.id}/>)
+    }
+
     render() {
         const { classes, taskList } = this.props;
         const { expanded, taskInput, editMode } = this.state;
@@ -120,11 +134,9 @@ class TodoList extends Component {
                         TODO
                         </Typography>
                         <List>
-                        {taskList.map((value, i) => (
-                            i === taskList.length -1 ?
-                            <TodoListItem newOne={true} checked={value.checked} text={value.todo} editMode={editMode} id={value.id} key={value.id}/>
-                            : <TodoListItem newOne={false} checked={value.checked} text={value.todo} editMode={editMode} id={value.id} key={value.id}/>
-                        ))}
+                        {
+                            taskList.length < 1 ? <Typography gutterBottom variant="headline" component="h1">Nothing todo!</Typography> : taskList.map(this.renderListItems)
+                        }
                         </List>
                     </CardContent>
                     <CardActions> 
@@ -173,7 +185,8 @@ class TodoList extends Component {
 
 const mapStateToProps = state => {
     return{
-        taskList: state.tasks
+        taskList: state.tasks,
+        user: state.user
     }
 }
 

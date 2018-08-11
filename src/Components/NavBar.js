@@ -7,6 +7,10 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import HomeIcon from '@material-ui/icons/Home';
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { Avatar } from '../../node_modules/@material-ui/core';
+import deepOrange from '@material-ui/core/colors/deepOrange';
+
 
 const styles = theme => ({
   appBarColor: {
@@ -24,28 +28,51 @@ const styles = theme => ({
   },
   registerBTN: {
     marginLeft: 10
+  },
+  orangeAvatar: {
+    color: '#fff',
+    backgroundColor: deepOrange[500],
+    textDecoration: "none"
   }
 });
 
+{/* <Button variant="outlined" color="inherit" component={Link} to="/">Profile</Button> */}
 
 const NavBar = (props) => {
+
   const { classes } = props;
   return (
     <div className={classes.root}>
       <AppBar position="sticky" className={classes.appBarColor}>
         <Toolbar>
-          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" component={Link} to="/">
+          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" component={Link} to="/tasks">
             <HomeIcon />
           </IconButton>
           <Typography variant="title" color="inherit" className={classes.flex}>
             Todo list
           </Typography>
-          <Button variant="outlined" color="inherit" component={Link} to="/login">Login</Button>
-          <Button className={classes.registerBTN} variant="outlined" color="inherit" component={Link} to="/register">Register</Button>
+          {
+            !props.user.id 
+            ? 
+            <div>
+              <Button variant="outlined" color="inherit" component={Link} to="/">Login</Button>
+              <Button className={classes.registerBTN} variant="outlined" color="inherit" component={Link} to="/register">Register</Button>
+            </div>
+            :
+            
+            <Avatar className={classes.orangeAvatar} component={Link} to="/tasks">{props.user.name.charAt(0).toUpperCase()}</Avatar>
+
+          }
         </Toolbar>
       </AppBar>
     </div>
   )
 }
 
-export default withStyles(styles)(NavBar)
+const mapStateToProps = state => {
+  return{
+    user: state.user
+  }
+}
+
+export default withStyles(styles)(connect(mapStateToProps)(NavBar))

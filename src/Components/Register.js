@@ -37,7 +37,7 @@ class Register extends Component {
 
     handleSubmit = (values) => {
         this.props.registerUser(values, () => {
-            this.props.history.push("/");
+            this.props.history.push("/tasks");
         })
     }
 

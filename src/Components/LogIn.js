@@ -36,7 +36,7 @@ class LogIn extends React.Component {
 
     handleSubmit = (values) => {
         this.props.loginUser(values, () => {
-            this.props.history.push("/");
+            this.props.history.push("/tasks");
         })
     }
 
