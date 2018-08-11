@@ -9,7 +9,7 @@ import { Delete } from '@material-ui/icons'
 import axios from 'axios'
 import { ROOT_URL } from '../Redux/constants';
 import { connect } from 'react-redux'
-import { getTasks } from '../Redux/actions'
+import { getPublicTasks, getPrivateTasks } from '../Redux/actions'
 import EditIcon from '@material-ui/icons/Edit'
 import DoneIcon from '@material-ui/icons/Done'
 
@@ -20,6 +20,13 @@ const styles = ({
     },
     deleteStyle: {
       marginRight: 10
+    },
+    textField: {
+      width: "80%"
+    },
+    cardContainer: {
+      display: "flex",
+      justifyContent: "center"
     }
 })
 
@@ -48,7 +55,7 @@ class TodoListItem extends React.Component {
     setTimeout(() => {
       axios.delete(`${ROOT_URL}/tasks/delete/${this.props.id}`)
       .then(data => {
-        this.props.getTasks();
+        this.props.privateTasks ? this.props.getPrivateTasks(this.props.name) : this.props.getPublicTasks();
       })
       .catch(err => console.log(err));
     }, 1000)
@@ -70,7 +77,7 @@ class TodoListItem extends React.Component {
           todo: editedValue
         })
         .then(respose => {
-          this.props.getTasks();
+          this.props.privateTasks ? this.props.getPrivateTasks(this.props.name) : this.props.getPublicTasks();
         })
         .catch(err => console.log(err))
       }, 1000)
@@ -87,14 +94,14 @@ class TodoListItem extends React.Component {
         checked: this.state.checked
       })
       .then(res => {
-        this.props.getTasks()
+        this.props.privateTasks ? this.props.getPrivateTasks(this.props.name) : this.props.getPublicTasks();
       })
       .catch(err => console.log(err))
     }, 250)
   }
 
   render(){
-    const { text, key, classes } = this.props;
+    const { key, classes, name } = this.props;
     const { editMode, visible, editedValue, checked } = this.state;
     return (
       <Collapse in={visible} style={{padding: "0 3px"}}>
@@ -104,9 +111,10 @@ class TodoListItem extends React.Component {
                   style={{
                           textDecoration: checked ? "line-through" : "none",
                           opacity: checked ? ".5" : "1",
-                          transition: 'opacity 250ms'
+                          transition: 'opacity 250ms',
                         }}
-                  primary={editedValue} />
+                  primary={editedValue}
+                  secondary={`- ${name}`} />
                 <ListItemSecondaryAction>
                     <Checkbox 
                       checked={checked}
@@ -120,7 +128,7 @@ class TodoListItem extends React.Component {
                 </ListItemSecondaryAction>
             </ListItem>
             <Collapse in={editMode} timeout="auto" unmountOnExit>
-                <CardContent>
+                <CardContent className={classes.cardContainer}>
                     <Zoom 
                       style={{ transitionDelay: editMode ? 250 : 0}}
                       in={editMode}
@@ -138,6 +146,7 @@ class TodoListItem extends React.Component {
                       in={editMode}
                       >
                       <Input
+                            className={classes.textField}
                             value={editedValue}
                             onChange={this.onEditChange}
                             inputProps={{
@@ -153,4 +162,4 @@ class TodoListItem extends React.Component {
   
 }
 
-export default connect(null, {getTasks})(withStyles(styles)(TodoListItem));
+export default connect(null, {getPublicTasks, getPrivateTasks})(withStyles(styles)(TodoListItem));

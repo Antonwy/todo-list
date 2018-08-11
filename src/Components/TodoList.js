@@ -2,14 +2,13 @@ import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import classNames from 'classnames'
-import { Card, CardContent, CardActions, Button, Typography, Collapse, TextField, IconButton } from '../../node_modules/@material-ui/core';
+import { Card, CardContent, CardActions, Button, Typography, Collapse, TextField, IconButton, CircularProgress, Checkbox, FormControlLabel } from '../../node_modules/@material-ui/core';
 import TodoListItem from './TodoListItem'
 import SaveIcon from '@material-ui/icons/Save'
 import AddIcon from '@material-ui/icons/Add'
-import { SnackBar } from './MaterialUI'
 
 import { connect } from 'react-redux';
-import { addListItem, getTasks } from '../Redux/actions'
+import { addListItem, getPublicTasks } from '../Redux/actions'
 
 const styles = theme => ({
     root: {
@@ -21,7 +20,6 @@ const styles = theme => ({
       [theme.breakpoints.down("xs")]: {
         maxWidth: 300
       },
-      backgroundColor: theme.palette.background.paper,
       margin: "50px auto"
     },
     textField: {
@@ -55,6 +53,24 @@ const styles = theme => ({
     },
     expandOpen: {
         transform: 'rotate(45deg)',
+    },
+    buttonProgress: {
+        color: theme.palette.background.primary,
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        marginTop: -12,
+        marginLeft: -12,
+    },
+    privateCheck: {
+        marginLeft: 20
+    },
+    importance: {
+        display: "flex",
+        flexDirection: "row",
+        flexWrap: "wrap",
+        alignItems: "center",
+        alignContent: "center"
     }
 });
 
@@ -65,6 +81,8 @@ class TodoList extends Component {
     state = {
         expanded: false,
         taskInput: '',
+        loading: false,
+        privateChecked: false
     }
 
     componentDidMount(){
@@ -73,7 +91,7 @@ class TodoList extends Component {
             this.props.history.push('/')
         }
 
-        this.props.getTasks();
+        this.props.getPublicTasks();
     }
 
     handleExpandClick = () => {
@@ -82,15 +100,17 @@ class TodoList extends Component {
 
     addList = (event) => {
         event.preventDefault();
-        const {taskInput} = this.state
+        const {taskInput, privateChecked} = this.state
         if(taskInput !== ""){
-            this.props.addListItem(taskInput, () => {
+            console.log("ADD", this.props.user.name, privateChecked)
+            this.setState({loading: true})
+            this.props.addListItem(taskInput, this.props.user.name, privateChecked, () => {
                 this.setState({
                     taskInput: '',
-                    editMode: false
+                    loading: false
                 })
                 this.handleExpandClick();
-                this.props.getTasks();
+                this.props.getPublicTasks();
             });
         }
     }
@@ -107,30 +127,27 @@ class TodoList extends Component {
         })
     }
 
-    editClicked = () => {
-        this.setState({
-            editMode: !this.state.editMode
-        })
+    handlePrivateCheck = () => {
+        this.setState({privateChecked: !this.state.privateChecked})
     }
 
     renderListItems = (value, i) => {
         const { taskList } = this.props;
-        const { editMode } = this.state;
 
         return (i === taskList.length -1 ?
-        <TodoListItem newOne={true} checked={value.checked} text={value.todo} editMode={editMode} id={value.id} key={value.id}/>
-        : <TodoListItem newOne={false} checked={value.checked} text={value.todo} editMode={editMode} id={value.id} key={value.id}/>)
+        <TodoListItem newOne={true} checked={value.checked} text={value.todo} id={value.id} key={value.id} name={value.name} />
+        : <TodoListItem newOne={false} checked={value.checked} text={value.todo} id={value.id} key={value.id} name={value.name} />)
     }
 
     render() {
         const { classes, taskList } = this.props;
-        const { expanded, taskInput, editMode } = this.state;
+        const { expanded, taskInput, loading, privateChecked } = this.state;
 
         return (
             <div className={classes.root}>
                 <Card>
                     <CardContent>
-                        <Typography gutterBottom variant="headline" component="h1">
+                        <Typography gutterBottom variant="display1" component="h1">
                         TODO
                         </Typography>
                         <List>
@@ -169,10 +186,23 @@ class TodoList extends Component {
                                         type="submit"
                                         variant="outlined"
                                         className={classes.buttonClass}
+                                        disabled={loading}
                                         color="primary">
                                         <SaveIcon className={classNames(classes.leftIcon, classes.iconSmall)} />
                                         Save
                                     </Button>
+                                    {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                            checked={privateChecked}
+                                            onChange={this.handlePrivateCheck}
+                                            className={classes.privateCheck}
+                                            />
+                                        }
+                                        label="Private"
+                                    />
+                                    <Typography paragraph variant="caption">Private tasks can be found on the profile page!</Typography>
                                 </div>
                             </form>
                         </CardContent>
@@ -185,9 +215,9 @@ class TodoList extends Component {
 
 const mapStateToProps = state => {
     return{
-        taskList: state.tasks,
+        taskList: state.tasks.public,
         user: state.user
     }
 }
 
-export default withStyles(styles)(connect(mapStateToProps, { addListItem, getTasks })(TodoList))
+export default withStyles(styles)(connect(mapStateToProps, { addListItem, getPublicTasks })(TodoList))

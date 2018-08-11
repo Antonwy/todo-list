@@ -1,18 +1,29 @@
-import { ROOT_URL, GET_TASKS, FETCH_USER } from "./constants";
+import { ROOT_URL, FETCH_USER, GET_PUBLIC_TASKS, GET_PRIVATE_TASKS, LOGOUT_USER } from "./constants";
 import axios from 'axios'
 
-export const addListItem = (item, callback) => (dispatch) => {
+export const addListItem = (item, name, checked, callback) => (dispatch) => {
    axios.post(`${ROOT_URL}/tasks/new`, {
-       todo: item
+       todo: item,
+       name: name,
+       checked: checked
    }).then(response => {
+        console.log(response)
         callback()
    }).catch(error => console.log(error))
-} 
+}
 
-export const getTasks = () => (dispatch) => {
-    axios.get(`${ROOT_URL}/tasks`)
+export const getPublicTasks = () => (dispatch) => {
+    axios.get(`${ROOT_URL}/tasks/public`)
         .then(response => {
-            dispatch({ type: GET_TASKS, payload: response.data })
+            dispatch({ type: GET_PUBLIC_TASKS, payload: response.data })
+        })
+        .catch(error => console.log(error))
+}
+
+export const getPrivateTasks = (name) => (dispatch) => {
+    axios.get(`${ROOT_URL}/tasks/private/${name}`)
+        .then(response => {
+            dispatch({ type: GET_PRIVATE_TASKS, payload: response.data })
         })
         .catch(error => console.log(error))
 }
@@ -48,5 +59,9 @@ export const loginUser = (values, callback) => (dispatch) => {
         }
     }).catch(error => console.log(error));
 
+}
+
+export const logoutUser = () => {
+    return {type: LOGOUT_USER, payload: {}}
 }
 

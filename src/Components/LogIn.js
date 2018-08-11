@@ -8,7 +8,6 @@ import { loginUser } from '../Redux/actions'
 const styles = theme => ({
     root: {
         width: "100%",
-        backgroundColor: theme.palette.background.paper,
         margin: "50px auto"
     },
     container: {
