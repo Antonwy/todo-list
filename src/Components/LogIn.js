@@ -50,8 +50,7 @@ class LogIn extends React.Component {
             className={this.props.classes.textField}
             label={touched && error ? error : label}
             type={type}
-            floatingLabelText={label}
-            error={touched && error}
+            error={touched && error ? true : false}
             {...input}
         />
     )
