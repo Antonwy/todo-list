@@ -35,7 +35,7 @@ const theme = createMuiTheme({
 
 ReactDOM.render(
         <MuiThemeProvider theme={theme}>
-            <Router>
+            <Router history={history} basename={process.env.PUBLIC_URL}>
                 <Provider store={store}>
                     <App />
                 </Provider>
