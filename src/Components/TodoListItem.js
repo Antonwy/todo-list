@@ -19,14 +19,16 @@ const styles = ({
       margin: "10px 0"
     },
     deleteStyle: {
-      marginRight: 10
+      marginRight: 10,
+      
     },
     textField: {
       width: "80%"
     },
     cardContainer: {
       display: "flex",
-      justifyContent: "center"
+      justifyContent: "center",
+      flexWrap: "wrap"
     }
 })
 
@@ -133,18 +135,6 @@ class TodoListItem extends React.Component {
                       style={{ transitionDelay: editMode ? 250 : 0}}
                       in={editMode}
                       >
-                        <IconButton 
-                          className={classes.deleteStyle}
-                          color="secondary"
-                          size="small"
-                          onClick={this.onDelete}>
-                          <Delete />
-                        </IconButton>
-                    </Zoom>
-                    <Zoom
-                      style={{ transitionDelay: editMode ? 250 : 0}}
-                      in={editMode}
-                      >
                       <Input
                             className={classes.textField}
                             value={editedValue}
@@ -152,6 +142,18 @@ class TodoListItem extends React.Component {
                             inputProps={{
                               'aria-label': 'Description',
                       }}/>
+                    </Zoom>
+                    <Zoom
+                      style={{ transitionDelay: editMode ? 250 : 0}}
+                      in={editMode}
+                      >
+                      <IconButton 
+                          className={classes.deleteStyle}
+                          color="secondary"
+                          size="small"
+                          onClick={this.onDelete}>
+                          <Delete />
+                        </IconButton>
                     </Zoom>
                 </CardContent>
             </Collapse>

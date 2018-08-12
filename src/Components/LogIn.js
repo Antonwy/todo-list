@@ -7,7 +7,7 @@ import { loginUser } from '../Redux/actions'
 
 const styles = theme => ({
     root: {
-        width: "90%",
+        width: "100%",
         margin: "50px auto",
         maxWidth: 400
     },

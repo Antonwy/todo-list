@@ -7,7 +7,7 @@ import UserListItem from './UserListItem';
 
 const styles = theme => ({
     root: {
-        width: "90%",
+        width: "100%",
         maxWidth: 700,
         margin: "50px auto"
     },
@@ -82,7 +82,7 @@ class CreateGroup extends Component {
                     <Card>
                         <CardContent>
                             <Typography variant="display3" component="h1">Create Group</Typography>
-                            <Typography variant="title" component="h2">Choose user:</Typography>
+                            <Typography variant="subheading" component="h2">Choose user:</Typography>
                             <TextField
                                 label="Search"
                                 className={classes.searchField}

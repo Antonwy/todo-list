@@ -1,24 +1,17 @@
 import React from 'react';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-
-
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Avatar, ListItemText, ListItemIcon, ListItem } from '../../node_modules/@material-ui/core';
+import { Avatar, Hidden } from '../../node_modules/@material-ui/core';
 import deepOrange from '@material-ui/core/colors/deepOrange';
-import { Home, Person, Group } from '@material-ui/icons'
+import DrawerVariant from './DrawerVariant';
 
 const drawerWidth = 240;
 
@@ -51,37 +44,13 @@ const styles = theme => ({
   hide: {
     display: 'none',
   },
-  drawerPaper: {
-    position: 'fixed',
-    height: "100vh",
-    whiteSpace: 'nowrap',
-    width: drawerWidth,
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerPaperClose: {
-    overflowX: 'hidden',
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    width: theme.spacing.unit * 7,
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing.unit * 9,
-    },
-  },
-  toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    ...theme.mixins.toolbar,
-  },
   content: {
     flexGrow: 1,
-    padding: theme.spacing.unit * 3,
+    [theme.breakpoints.up('sm')]: {
+      padding: theme.spacing.unit * 3,
+    },
+    padding: theme.spacing.unit,
+    paddingTop: theme.spacing.unit * 3
   },
   registerBTN: {
     marginLeft: 10
@@ -98,6 +67,13 @@ const styles = theme => ({
   alignRight: {
       position: "absolute",
       right: 20
+  },
+  barTitle: {
+    display: "block",
+    [theme.breakpoints.down('sm')]: {
+      position: "fixed",
+      left: 60
+    },
   }
 });
 
@@ -132,7 +108,7 @@ class MiniDrawer extends React.Component {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="title" color="inherit" noWrap>
+            <Typography variant="title" color="inherit" noWrap className={classes.barTitle}>
               Todo list
             </Typography>
             {
@@ -150,40 +126,20 @@ class MiniDrawer extends React.Component {
             }
           </Toolbar>
         </AppBar>
-        <Drawer
-          variant="permanent"
-          classes={{
-            paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
-          }}
-          open={this.state.open}
-        >
-          <div className={classes.toolbar}>
-            <IconButton onClick={this.handleDrawerClose}>
-              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-            </IconButton>
-          </div>
-          <Divider />
-          <List>
-            <ListItem button component={Link} to="/tasks">
-                <ListItemIcon>
-                    <Home />
-                </ListItemIcon>
-                <ListItemText inset primary="Home" />
-            </ListItem>
-            <ListItem button component={Link} to="/profile">
-                <ListItemIcon>
-                    <Person />
-                </ListItemIcon>
-                <ListItemText inset primary="Profile" />
-            </ListItem>
-            <ListItem button component={Link} to="/group">
-                <ListItemIcon>
-                    <Group />
-                </ListItemIcon>
-                <ListItemText inset primary="Group" />
-            </ListItem>
-          </List>
-        </Drawer>
+        <Hidden smDown>
+          <DrawerVariant 
+            variant="permanent" 
+            open={this.state.open} 
+            handleDrawerClose={this.handleDrawerClose}
+          />
+        </Hidden>
+        <Hidden smUp>
+          <DrawerVariant 
+            variant="temporary" 
+            open={this.state.open} 
+            handleDrawerClose={this.handleDrawerClose}
+          />
+        </Hidden>
         <main className={classes.content}>
           <div className={classes.toolbar} />
           {this.props.children}

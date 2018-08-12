@@ -74,12 +74,6 @@ const styles = theme => ({
     root: {
         width: '100%',
         maxWidth: 700,
-        [theme.breakpoints.down("sm")]: {
-          maxWidth: 500
-        },
-        [theme.breakpoints.down("xs")]: {
-          maxWidth: 300
-        },
         margin: "50px auto",
       },
       orangeAvatar: {

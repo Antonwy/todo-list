@@ -12,9 +12,9 @@ import { addListItem, getPublicTasks } from '../Redux/actions'
 
 const styles = theme => ({
     root: {
-      width: "90%",
+      width: "100%",
       maxWidth: 700,
-      margin: "50px auto"
+      margin: "50px auto",
     },
     textField: {
         width: "100%"
