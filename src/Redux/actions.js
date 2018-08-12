@@ -1,4 +1,4 @@
-import { ROOT_URL, FETCH_USER, GET_PUBLIC_TASKS, GET_PRIVATE_TASKS, LOGOUT_USER } from "./constants";
+import { ROOT_URL, FETCH_USER, GET_PUBLIC_TASKS, GET_PRIVATE_TASKS, LOGOUT_USER, GET_ALL_USER } from "./constants";
 import axios from 'axios'
 
 export const addListItem = (item, name, checked, callback) => (dispatch) => {
@@ -57,11 +57,23 @@ export const loginUser = (values, callback) => (dispatch) => {
             dispatch({ type: FETCH_USER, payload: response.data });
             callback();
         }
-    }).catch(error => console.log(error));
+    }).catch(error => callback(error));
 
 }
 
 export const logoutUser = () => {
     return {type: LOGOUT_USER, payload: {}}
+}
+
+export const getAllUser = (callback) => (dispatch) => {
+    axios.get(`${ROOT_URL}/`)
+        .then(response => {
+            dispatch({
+                type: GET_ALL_USER,
+                payload: response.data
+            })
+            callback();
+        })
+        .catch(error => console.log(error))
 }
 

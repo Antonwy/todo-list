@@ -1,4 +1,4 @@
-import { GET_PUBLIC_TASKS, GET_PRIVATE_TASKS, FETCH_USER, LOGOUT_USER } from "./constants";
+import { GET_PUBLIC_TASKS, GET_PRIVATE_TASKS, FETCH_USER, LOGOUT_USER, GET_ALL_USER } from "./constants";
 
 
 const initialState = {
@@ -26,5 +26,14 @@ export const userInfo = (state={}, action) => {
             return action.payload;
         default:
             return state;
+    }
+}
+
+export const allUser = (state=[], action) => {
+    switch (action.type) {
+        case GET_ALL_USER:
+            return action.payload
+        default:
+            return state
     }
 }

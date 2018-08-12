@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import classNames from 'classnames'
-import { Card, CardContent, CardActions, Button, Typography, Collapse, TextField, IconButton, CircularProgress, Checkbox, FormControlLabel } from '../../node_modules/@material-ui/core';
+import { Card, CardContent, CardActions, Button, Typography, Collapse, TextField, IconButton, CircularProgress, Checkbox, FormControlLabel, Grow } from '../../node_modules/@material-ui/core';
 import TodoListItem from './TodoListItem'
 import SaveIcon from '@material-ui/icons/Save'
 import AddIcon from '@material-ui/icons/Add'
@@ -12,14 +12,8 @@ import { addListItem, getPublicTasks } from '../Redux/actions'
 
 const styles = theme => ({
     root: {
-      width: '100%',
+      width: "90%",
       maxWidth: 700,
-      [theme.breakpoints.down("sm")]: {
-        maxWidth: 500
-      },
-      [theme.breakpoints.down("xs")]: {
-        maxWidth: 300
-      },
       margin: "50px auto"
     },
     textField: {
@@ -82,7 +76,8 @@ class TodoList extends Component {
         expanded: false,
         taskInput: '',
         loading: false,
-        privateChecked: false
+        privateChecked: false,
+        cardAnimation: false
     }
 
     componentDidMount(){
@@ -92,6 +87,10 @@ class TodoList extends Component {
         }
 
         this.props.getPublicTasks();
+
+        this.setState({
+            cardAnimation: true
+        })
     }
 
     handleExpandClick = () => {
@@ -141,73 +140,75 @@ class TodoList extends Component {
 
     render() {
         const { classes, taskList } = this.props;
-        const { expanded, taskInput, loading, privateChecked } = this.state;
+        const { expanded, taskInput, loading, privateChecked, cardAnimation } = this.state;
 
         return (
             <div className={classes.root}>
-                <Card>
-                    <CardContent>
-                        <Typography gutterBottom variant="display1" component="h1">
-                        TODO
-                        </Typography>
-                        <List>
-                        {
-                            taskList.length < 1 ? <Typography gutterBottom variant="headline" component="h1">Nothing todo!</Typography> : taskList.map(this.renderListItems)
-                        }
-                        </List>
-                    </CardContent>
-                    <CardActions> 
-                        <div className={classes.btnContainer}>
-                            <IconButton 
-                                color="primary"
-                                className={classNames(classes.expand, classes.fabPos,{
-                                    [classes.expandOpen] : expanded
-                                })}
-                                onClick={this.handleExpandClick}
-                            >
-                            <AddIcon />
-                            </IconButton>
-                        </div>
-                    </CardActions>
-                    <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <Grow in={cardAnimation}>
+                    <Card>
                         <CardContent>
-                            <Typography paragraph variant="headline">
-                                Add Task:
+                            <Typography gutterBottom variant="display1" component="h1">
+                            TODO
                             </Typography>
-                            <form onSubmit={this.addList} noValidate>
-                                <TextField
-                                    label="Task"
-                                    className={classes.textField}
-                                    value={taskInput}
-                                    onChange={this.onInputChange}
-                                />
-                                <div className={classes.container}>
-                                    <Button
-                                        type="submit"
-                                        variant="outlined"
-                                        className={classes.buttonClass}
-                                        disabled={loading}
-                                        color="primary">
-                                        <SaveIcon className={classNames(classes.leftIcon, classes.iconSmall)} />
-                                        Save
-                                    </Button>
-                                    {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox
-                                            checked={privateChecked}
-                                            onChange={this.handlePrivateCheck}
-                                            className={classes.privateCheck}
-                                            />
-                                        }
-                                        label="Private"
-                                    />
-                                    <Typography paragraph variant="caption">Private tasks can be found on the profile page!</Typography>
-                                </div>
-                            </form>
+                            <List>
+                            {
+                                taskList.length < 1 ? <Typography gutterBottom variant="headline" component="h1">Nothing todo!</Typography> : taskList.map(this.renderListItems)
+                            }
+                            </List>
                         </CardContent>
-                    </Collapse>
-                </Card>
+                        <CardActions> 
+                            <div className={classes.btnContainer}>
+                                <IconButton 
+                                    color="secondary"
+                                    className={classNames(classes.expand, classes.fabPos,{
+                                        [classes.expandOpen] : expanded
+                                    })}
+                                    onClick={this.handleExpandClick}
+                                >
+                                <AddIcon />
+                                </IconButton>
+                            </div>
+                        </CardActions>
+                        <Collapse in={expanded} timeout="auto" unmountOnExit>
+                            <CardContent>
+                                <Typography paragraph variant="headline">
+                                    Add Task:
+                                </Typography>
+                                <form onSubmit={this.addList} noValidate>
+                                    <TextField
+                                        label="Task"
+                                        className={classes.textField}
+                                        value={taskInput}
+                                        onChange={this.onInputChange}
+                                    />
+                                    <div className={classes.container}>
+                                        <Button
+                                            type="submit"
+                                            variant="outlined"
+                                            className={classes.buttonClass}
+                                            disabled={loading}
+                                            color="secondary">
+                                            <SaveIcon className={classNames(classes.leftIcon, classes.iconSmall)} />
+                                            Save
+                                        </Button>
+                                        {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox
+                                                checked={privateChecked}
+                                                onChange={this.handlePrivateCheck}
+                                                className={classes.privateCheck}
+                                                />
+                                            }
+                                            label="Private"
+                                        />
+                                        <Typography paragraph variant="caption">Private tasks can be found on the profile page!</Typography>
+                                    </div>
+                                </form>
+                            </CardContent>
+                        </Collapse>
+                    </Card>
+                </Grow>
             </div>
         )
     }

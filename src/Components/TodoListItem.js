@@ -121,7 +121,7 @@ class TodoListItem extends React.Component {
                       onChange={this.onCheckedClicked}
                     />
                     <IconButton
-                        color="primary"
+                        color="secondary"
                         onClick={editMode ? this.onSaveChanges : this.onEditClicked}>
                         {editMode ? <DoneIcon /> : <EditIcon />}
                     </IconButton>
