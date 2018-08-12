@@ -2,13 +2,13 @@ import React from 'react';
 import TodoList from './Components/TodoList';
 import LogIn from './Components/LogIn'
 import Register from './Components/Register'
-import { Route } from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom'
 import Profile from './Components/Profile'
 import NavBarDrawer from './Components/NavBarDrawer';
 import CreateGroup from './Components/CreateGroup'
 import GroupTasks from './Components/GroupTasks';
 
-
+const url = process.env.PUBLIC_URL;
 
 class App extends React.Component {
 
@@ -23,14 +23,14 @@ class App extends React.Component {
   render(){
     return (
       <div>
-        {/* <NavBar /> */}
+        
         <NavBarDrawer>
-          <Route exact path="/" component={LogIn} />
-          <Route path="/tasks" component={TodoList} />
-          <Route path="/register" component={Register} />
-          <Route path="/profile" component={Profile} />
-          <Route path="/createGroup" component={CreateGroup} />
-          <Route path="/group" component={GroupTasks} />
+          <Route exact path={url + "/"} component={LogIn} />
+          <Route path={url + "/tasks"} component={TodoList} />
+          <Route path={url + "/register"} component={Register} />
+          <Route path={url + "/profile"} component={Profile} />
+          <Route path={url + "/createGroup"} component={CreateGroup} />
+          <Route path={url + "/group"} component={GroupTasks} />
         </NavBarDrawer>
       </div>
     )
