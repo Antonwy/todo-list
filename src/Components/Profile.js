@@ -26,11 +26,11 @@ class Profile extends Component {
     }
 
     renderListItems = (value, i) => {
-        const { taskList } = this.props;
+        const { taskList, getPrivateTasks } = this.props;
 
         return (i === taskList.length -1 ?
-        <TodoListItem newOne={true} checked={value.checked} text={value.todo} id={value.id} key={value.id} name={value.name}/>
-        : <TodoListItem newOne={false} checked={value.checked} text={value.todo} id={value.id} key={value.id} name={value.name}/>)
+        <TodoListItem reload={getPrivateTasks} newOne={true} checked={value.checked} text={value.todo} id={value.id} key={value.id} name={value.name}/>
+        : <TodoListItem reload={getPrivateTasks} newOne={false} checked={value.checked} text={value.todo} id={value.id} key={value.id} name={value.name}/>)
     }
 
     logout = () => {

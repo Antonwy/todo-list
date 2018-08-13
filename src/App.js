@@ -2,7 +2,7 @@ import React from 'react';
 import TodoList from './Components/TodoList';
 import LogIn from './Components/LogIn'
 import Register from './Components/Register'
-import { Route, Redirect } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import Profile from './Components/Profile'
 import NavBarDrawer from './Components/NavBarDrawer';
 import CreateGroup from './Components/CreateGroup'

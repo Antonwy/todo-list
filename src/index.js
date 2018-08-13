@@ -13,7 +13,7 @@ import { Provider } from 'react-redux'
 //import { createLogger } from 'redux-logger'
 import { reducer as formReducer } from 'redux-form'
 import thunk from 'redux-thunk'
-import { taskList, userInfo, allUser } from './Redux/reducers'
+import { taskList, userInfo, allUser, groupInfo } from './Redux/reducers'
 
 
 //const logger = createLogger();
@@ -21,7 +21,8 @@ const rootReducer = combineReducers({
     tasks: taskList,
     user: userInfo,
     form: formReducer,
-    allUser
+    allUser,
+    group: groupInfo
 
 })
 const store = createStore(rootReducer, applyMiddleware(thunk))

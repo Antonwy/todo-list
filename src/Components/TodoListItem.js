@@ -57,7 +57,8 @@ class TodoListItem extends React.Component {
     setTimeout(() => {
       axios.delete(`${ROOT_URL}/tasks/delete/${this.props.id}`)
       .then(data => {
-        this.props.privateTasks ? this.props.getPrivateTasks(this.props.name) : this.props.getPublicTasks();
+        const { reloadId, reload } = this.props;
+        reloadId ? reload(reloadId) : reload() 
       })
       .catch(err => console.log(err));
     }, 1000)
@@ -79,7 +80,8 @@ class TodoListItem extends React.Component {
           todo: editedValue
         })
         .then(respose => {
-          this.props.privateTasks ? this.props.getPrivateTasks(this.props.name) : this.props.getPublicTasks();
+          const { reloadId, reload } = this.props;
+          reloadId ? reload(reloadId) : reload() 
         })
         .catch(err => console.log(err))
       }, 1000)
@@ -96,7 +98,8 @@ class TodoListItem extends React.Component {
         checked: this.state.checked
       })
       .then(res => {
-        this.props.privateTasks ? this.props.getPrivateTasks(this.props.name) : this.props.getPublicTasks();
+        const { reloadId, reload } = this.props;
+        reloadId ? reload(reloadId) : reload() 
       })
       .catch(err => console.log(err))
     }, 250)

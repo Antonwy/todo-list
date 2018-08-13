@@ -101,9 +101,8 @@ class TodoList extends Component {
         event.preventDefault();
         const {taskInput, privateChecked} = this.state
         if(taskInput !== ""){
-            console.log("ADD", this.props.user.name, privateChecked)
             this.setState({loading: true})
-            this.props.addListItem(taskInput, this.props.user.name, privateChecked, () => {
+            this.props.addListItem(taskInput, this.props.user.name, privateChecked, null, () => {
                 this.setState({
                     taskInput: '',
                     loading: false
@@ -131,11 +130,11 @@ class TodoList extends Component {
     }
 
     renderListItems = (value, i) => {
-        const { taskList } = this.props;
+        const { taskList, getPublicTasks } = this.props;
 
         return (i === taskList.length -1 ?
-        <TodoListItem newOne={true} checked={value.checked} text={value.todo} id={value.id} key={value.id} name={value.name} />
-        : <TodoListItem newOne={false} checked={value.checked} text={value.todo} id={value.id} key={value.id} name={value.name} />)
+        <TodoListItem  reload={getPublicTasks} newOne={true} checked={value.checked} text={value.todo} id={value.id} key={value.id} name={value.name} />
+        : <TodoListItem  reload={getPublicTasks} newOne={false} checked={value.checked} text={value.todo} id={value.id} key={value.id} name={value.name} />)
     }
 
     render() {

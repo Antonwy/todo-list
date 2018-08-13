@@ -3,7 +3,8 @@ import { Card, TextField, CardContent, Typography, Button, Fade, Grow } from '..
 import { withStyles } from '@material-ui/core/styles';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { loginUser } from '../Redux/actions'
+import { loginUser, getUser } from '../Redux/actions'
+import { LOCAL_STORAGE_USER_ID } from '../Redux/constants';
 
 const styles = theme => ({
     root: {
@@ -39,7 +40,16 @@ class LogIn extends React.Component {
         cardAnimation: false
     }
 
-    componentDidMount(){  
+    componentDidMount(){
+
+        let id = localStorage.getItem(LOCAL_STORAGE_USER_ID);
+
+        if(id){
+            this.props.getUser(id, () => {
+                return this.props.history.push("/tasks")
+            })
+        }
+
         this.setState({
             cardAnimation: true
         })
@@ -47,10 +57,11 @@ class LogIn extends React.Component {
 
     handleSubmit = (values) => {
         this.props.loginUser(values, (res) => {
-            if(res){
+            if(!res.name){
                 console.log(res)
                 this.setState({error: true})
             }else{
+                localStorage.setItem(LOCAL_STORAGE_USER_ID, res.id);
                 this.setState({
                     cardAnimation: false
                 })
@@ -141,4 +152,4 @@ export default withStyles(styles)(reduxForm({
     form: "login",
     validate
 })(
-    connect(null, { loginUser })(LogIn)))
+    connect(null, { loginUser, getUser })(LogIn)))
