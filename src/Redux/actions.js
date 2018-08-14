@@ -1,5 +1,25 @@
-import { ROOT_URL, FETCH_USER, GET_PUBLIC_TASKS, GET_PRIVATE_TASKS, LOGOUT_USER, GET_ALL_USER, CREATE_GROUP, GET_GROUP, LOCAL_STORAGE_USER_ID, GET_GROUP_TASKS } from "./constants";
+import { 
+    ROOT_URL, FETCH_USER, GET_PUBLIC_TASKS,
+    GET_PRIVATE_TASKS, LOGOUT_USER,
+    GET_ALL_USER, CREATE_GROUP, GET_GROUP,
+    LOCAL_STORAGE_USER_ID, GET_GROUP_TASKS, CHANGE_PRIMARY_COLOR, CHANGE_SECONDARY_COLOR 
+} from "./constants";
 import axios from 'axios'
+
+
+export const changePrimaryColor = (primary) => {
+    return{
+        type: CHANGE_PRIMARY_COLOR,
+        payload: primary
+    }
+}
+
+export const changeSecondaryColor = (secondary) => {
+    return{
+        type: CHANGE_SECONDARY_COLOR,
+        payload: secondary
+    }
+}
 
 export const addListItem = (item, name, checked, groupid, callback) => (dispatch) => {
    axios.post(`${ROOT_URL}/tasks/new`, {

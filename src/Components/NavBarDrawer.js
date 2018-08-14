@@ -10,7 +10,6 @@ import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Avatar, Hidden } from '../../node_modules/@material-ui/core';
-import deepOrange from '@material-ui/core/colors/deepOrange';
 import DrawerVariant from './DrawerVariant';
 
 const drawerWidth = 240;
@@ -50,14 +49,14 @@ const styles = theme => ({
       padding: theme.spacing.unit * 3,
     },
     padding: theme.spacing.unit,
-    paddingTop: theme.spacing.unit * 3
+    paddingTop: theme.spacing.unit * 3.,
   },
   registerBTN: {
     marginLeft: 10
   },
   orangeAvatar: {
     color: '#fff',
-    backgroundColor: deepOrange[500],
+    backgroundColor: theme.palette.secondary[300],
     textDecoration: "none"
   },
   name: {
@@ -91,8 +90,7 @@ class MiniDrawer extends React.Component {
   };
 
   render() {
-    const { classes, theme, user } = this.props;
-
+    const { classes, user } = this.props;
     return (
       <div className={classes.root}>
         <AppBar
@@ -155,5 +153,5 @@ const mapStateToProps = state => {
     }
 }
 
-export default withStyles(styles, { withTheme: true })(
+export default withStyles(styles)(
     connect(mapStateToProps)(MiniDrawer));

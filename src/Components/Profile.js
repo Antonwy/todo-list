@@ -3,7 +3,6 @@ import { Typography, Card, CardContent, Avatar, List, Button } from '../../node_
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core'
 import { Link } from 'react-router-dom'
-import deepOrange from '@material-ui/core/colors/deepOrange';
 import TodoListItem from './TodoListItem';
 import { logoutUser, getPrivateTasks } from '../Redux/actions'
 
@@ -78,7 +77,7 @@ const styles = theme => ({
       },
       orangeAvatar: {
         color: '#fff',
-        backgroundColor: deepOrange[500],
+        backgroundColor: theme.palette.secondary[500],
         textDecoration: "none",
         marginLeft: "auto",
         marginRight: "auto",

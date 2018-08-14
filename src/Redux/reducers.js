@@ -1,5 +1,6 @@
-import { GET_PUBLIC_TASKS, GET_PRIVATE_TASKS, FETCH_USER, LOGOUT_USER, GET_ALL_USER, CREATE_GROUP, GET_GROUP, GET_GROUP_TASKS } from "./constants";
-
+import { GET_PUBLIC_TASKS, GET_PRIVATE_TASKS, FETCH_USER, LOGOUT_USER, GET_ALL_USER, CREATE_GROUP, 
+    GET_GROUP, GET_GROUP_TASKS, CHANGE_COLORS, CHANGE_PRIMARY_COLOR, CHANGE_SECONDARY_COLOR } from "./constants";
+import { yellow, blueGrey } from '@material-ui/core/colors'
 
 const initialState = {
     public: [],
@@ -49,5 +50,24 @@ export const groupInfo = (state={}, action) => {
             return action.payload[0]
         default:
             return state
+    }
+}
+
+
+const defaultColors = {
+    primary: yellow,
+    secondary: blueGrey
+}
+
+export const colorManager = (state=defaultColors, action) => {
+    switch (action.type) {
+        case CHANGE_COLORS:
+            return action.payload
+        case CHANGE_PRIMARY_COLOR:
+            return Object.assign({}, state, {primary: action.payload})
+        case CHANGE_SECONDARY_COLOR: 
+            return Object.assign({}, state, {secondary: action.payload})
+        default:
+            return state;
     }
 }

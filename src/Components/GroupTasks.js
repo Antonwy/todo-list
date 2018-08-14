@@ -10,7 +10,7 @@ import classNames from 'classnames'
 
 const styles = theme => ({
     root: {
-        width: "90%",
+        width: "100%",
         maxWidth: 700,
         margin: "50px auto"
     },
@@ -62,7 +62,7 @@ class GroupTasks extends Component {
 
         if(!user.id){
            return history.push('/')
-        }else if(!user.groupinfo.groupid){
+        }else if(user.groupinfo.groupid === 'undefined'){
            return history.push('/createGroup')
         }
         
@@ -127,7 +127,7 @@ class GroupTasks extends Component {
             <Grow in={cardAnimation}>
                 <Card>
                     <CardContent>
-                        <Typography variant="display3" gutterBottom>{group.title}</Typography>
+                        <Typography variant="display2" gutterBottom>{group.title}</Typography>
                         <Typography variant="subheading">{"Created: " + this.formatTime(group.created)}</Typography>
                         <List>
                         {

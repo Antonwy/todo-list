@@ -109,7 +109,7 @@ class CreateGroup extends Component {
                 <Grow in={cardAnimation}>
                     <Card>
                         <CardContent>
-                            <Typography variant="display3" gutterBottom>Create Group</Typography>
+                            <Typography variant="display2" gutterBottom>Create Group</Typography>
 
                             <TextField label="Group name" className={classes.nameField} value={groupName} onChange={this.onInputChange('groupName')} />
 

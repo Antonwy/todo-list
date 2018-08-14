@@ -2,7 +2,7 @@ import React from 'react'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Divider from '@material-ui/core/Divider';
-import { Home, Person, Group } from '@material-ui/icons'
+import { Home, Person, Group, SettingsApplications } from '@material-ui/icons'
 import {  ListItemText, ListItemIcon, ListItem, IconButton } from '@material-ui/core'
 import List from '@material-ui/core/List';
 import Drawer from '@material-ui/core/Drawer';
@@ -78,6 +78,12 @@ const DrawerVariant = (props) => {
                     <Group />
                 </ListItemIcon>
                 <ListItemText inset primary="Group" />
+            </ListItem>
+            <ListItem button component={Link} to="/settings">
+                <ListItemIcon>
+                    <SettingsApplications />
+                </ListItemIcon>
+                <ListItemText inset primary="Settings" />
             </ListItem>
         </List>
     </Drawer>
