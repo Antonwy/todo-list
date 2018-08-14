@@ -12,6 +12,7 @@ import { withRouter } from 'react-router-dom'
 
 import { connect } from 'react-redux'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { LOCAL_STORAGE_PRIMARY_COLOR, LOCAL_STORAGE_SECONDARY_COLOR } from './Redux/constants';
 
 class App extends React.Component {
 
@@ -19,10 +20,21 @@ class App extends React.Component {
 
   render(){
 
+    let primary = this.props.colors.primary;
+    let secondary = this.props.colors.secondary
+
+    if(localStorage.getItem(LOCAL_STORAGE_PRIMARY_COLOR)){
+      primary = JSON.parse(localStorage.getItem(LOCAL_STORAGE_PRIMARY_COLOR))
+    }
+
+    if(localStorage.getItem(LOCAL_STORAGE_SECONDARY_COLOR)){
+      secondary = JSON.parse(localStorage.getItem(LOCAL_STORAGE_SECONDARY_COLOR))
+    }
+
     const theme = createMuiTheme({
       palette: {
-        primary: this.props.colors.primary,
-        secondary: this.props.colors.secondary
+        primary: primary,
+        secondary: secondary
       },
     });
 

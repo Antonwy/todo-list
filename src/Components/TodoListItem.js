@@ -3,7 +3,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
-import { IconButton, Input, Zoom, Card, Collapse, CardContent } from '@material-ui/core';
+import { IconButton, Input, Zoom, Card, Collapse, CardContent, Hidden } from '@material-ui/core';
 import { withStyles } from '@material-ui/core'
 import { Delete } from '@material-ui/icons'
 import axios from 'axios'
@@ -28,7 +28,12 @@ const styles = ({
     cardContainer: {
       display: "flex",
       justifyContent: "center",
+      alignItems: "center",
       flexWrap: "wrap"
+    },
+    itemText: {
+      width: "30%",
+      overflow: "hidden"
     }
 })
 
@@ -112,19 +117,21 @@ class TodoListItem extends React.Component {
       <Collapse in={visible} style={{padding: "0 3px"}}>
         <Card className={classes.cardStyle}>
           <ListItem key={key}>
-                <ListItemText 
+                <ListItemText
+                  className={classes.itemText}
                   style={{
                           textDecoration: checked ? "line-through" : "none",
                           opacity: checked ? ".5" : "1",
-                          transition: 'opacity 250ms',
                         }}
                   primary={editedValue}
                   secondary={`- ${name}`} />
                 <ListItemSecondaryAction>
-                    <Checkbox 
-                      checked={checked}
-                      onChange={this.onCheckedClicked}
-                    />
+                    <Hidden smDown>
+                      <Checkbox 
+                          checked={checked}
+                          onChange={this.onCheckedClicked}
+                        />
+                    </Hidden>
                     <IconButton
                         color="secondary"
                         onClick={editMode ? this.onSaveChanges : this.onEditClicked}>
@@ -134,10 +141,6 @@ class TodoListItem extends React.Component {
             </ListItem>
             <Collapse in={editMode} timeout="auto" unmountOnExit>
                 <CardContent className={classes.cardContainer}>
-                    <Zoom 
-                      style={{ transitionDelay: editMode ? 250 : 0}}
-                      in={editMode}
-                      >
                       <Input
                             className={classes.textField}
                             value={editedValue}
@@ -145,19 +148,19 @@ class TodoListItem extends React.Component {
                             inputProps={{
                               'aria-label': 'Description',
                       }}/>
-                    </Zoom>
-                    <Zoom
-                      style={{ transitionDelay: editMode ? 250 : 0}}
-                      in={editMode}
-                      >
-                      <IconButton 
-                          className={classes.deleteStyle}
-                          color="secondary"
-                          size="small"
-                          onClick={this.onDelete}>
-                          <Delete />
+                        <IconButton 
+                            className={classes.deleteStyle}
+                            color="secondary"
+                            size="small"
+                            onClick={this.onDelete}>
+                            <Delete />
                         </IconButton>
-                    </Zoom>
+                        <Hidden smUp>
+                          <Checkbox 
+                            checked={checked}
+                            onChange={this.onCheckedClicked}
+                          />
+                        </Hidden>
                 </CardContent>
             </Collapse>
           </Card>

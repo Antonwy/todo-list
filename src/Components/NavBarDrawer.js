@@ -73,6 +73,9 @@ const styles = theme => ({
       position: "fixed",
       left: 60
     },
+  },
+  toolbar: {
+    transition: "background 1s ease"
   }
 });
 
@@ -97,7 +100,7 @@ class MiniDrawer extends React.Component {
           position="fixed"
           className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
         >
-          <Toolbar disableGutters={!this.state.open}>
+          <Toolbar disableGutters={!this.state.open} className={classes.toolbar}>
             <IconButton
               color="inherit"
               aria-label="Open drawer"

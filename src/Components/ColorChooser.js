@@ -14,6 +14,7 @@ import { red, pink, purple, deepPurple,
     green, lightGreen, lime, yellow, amber,
     orange, deepOrange, brown, grey, blueGrey
 } from '@material-ui/core/colors';
+import { LOCAL_STORAGE_PRIMARY_COLOR, LOCAL_STORAGE_SECONDARY_COLOR } from '../Redux/constants';
 
 const colors = [
     red, pink, purple, deepPurple,
@@ -35,8 +36,10 @@ class ColorChooser extends React.Component {
     currCallback = callback;
     if(this.props.colorType === 'primary'){
       this.props.changePrimaryColor(color);
+      localStorage.setItem(LOCAL_STORAGE_PRIMARY_COLOR, JSON.stringify(color));
     }else{
       this.props.changeSecondaryColor(color);
+      localStorage.setItem(LOCAL_STORAGE_SECONDARY_COLOR, JSON.stringify(color));
     }
     
   }
