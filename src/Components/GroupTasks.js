@@ -4,7 +4,7 @@ import SaveIcon from '@material-ui/icons/Save'
 import AddIcon from '@material-ui/icons/Add'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
-import { getGroup, getGroupTasks, addListItem } from '../Redux/actions'
+import { getGroup, getGroupTasks, addListItem, deleteGroup, getUser } from '../Redux/actions'
 import TodoListItem from './TodoListItem';
 import classNames from 'classnames'
 
@@ -119,8 +119,18 @@ class GroupTasks extends Component {
         }
     }
 
+    onDeleteGroup = (e) => {
+        e.preventDefault();
+        const { group: {id, members}, deleteGroup, user } = this.props;
+        deleteGroup(id, members, () => {
+            getUser(user.id, () => {
+                console.log("deleted!")
+            })
+        })
+    }   
+
     render() {
-        const { classes, group, tasks } = this.props;
+        const { classes, group, tasks, user } = this.props;
         const { cardAnimation, expanded, loading, taskInput } = this.state;
         return (
         <div className={classes.root}>
@@ -128,7 +138,8 @@ class GroupTasks extends Component {
                 <Card>
                     <CardContent>
                         <Typography variant="display2" gutterBottom>{group.title}</Typography>
-                        <Typography variant="subheading">{"Created: " + this.formatTime(group.created)}</Typography>
+                        <Typography variant="subheading" gutterBottom>{"Created: " + this.formatTime(group.created)}</Typography>
+                        {group.admin === user.name ? <Button variant="contained" color="primary" onClick={this.onDeleteGroup}>Delete Group</Button> : <div></div>}
                         <List>
                         {
                             tasks.map(this.renderListItems)
@@ -190,4 +201,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default withStyles(styles)(connect(mapStateToProps, { getGroup, getGroupTasks, addListItem })(GroupTasks));
+export default withStyles(styles)(connect(mapStateToProps, { getGroup, getGroupTasks, addListItem, deleteGroup })(GroupTasks));

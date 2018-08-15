@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Typography, Card, CardContent, Avatar, List, Button } from '../../node_modules/@material-ui/core';
+import { Typography, Card, CardContent, Avatar, List, Button, Snackbar } from '../../node_modules/@material-ui/core';
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core'
 import { Link } from 'react-router-dom'
@@ -9,6 +9,11 @@ import { logoutUser, getPrivateTasks, getUser, getGroup, acceptInvite, cancelInv
 
 
 class Profile extends Component {
+
+    state = {
+        showSB: false,
+        SBmessage: ""
+    }
 
     componentDidMount(){
         const {getPrivateTasks, getUser, user, getGroup} = this.props;
@@ -60,7 +65,12 @@ class Profile extends Component {
         event.preventDefault();
         const { group: {id}, user: {name}, acceptInvite, getUser, user } = this.props;
         acceptInvite(id, name, () => {
-            getUser(user.id)
+            getUser(user.id, () => {
+                this.setState({
+                    showSB: true,
+                    SBmessage: "Accepted!"
+                })
+            })
         });
     }
 
@@ -68,8 +78,17 @@ class Profile extends Component {
         event.preventDefault();
         const { group: { id }, user: {name}, cancelInvite, getUser, user } = this.props;
         cancelInvite(id, name, () => {
-            getUser(user.id);
+            getUser(user.id, () => {
+                this.setState({
+                    showSB: true,
+                    SBmessage: "Canceled!"
+                })
+            });
         })
+    }
+
+    handleClose = () => {
+        this.setState({showSB: false})
     }
 
     render() {
@@ -100,6 +119,19 @@ class Profile extends Component {
                         }
                     </List>
                 </Card>
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                    open={this.state.showSB}
+                    autoHideDuration={3000}
+                    onClose={this.handleClose}
+                    ContentProps={{
+                        'aria-describedby': 'message-id',
+                    }}
+                    message={<span id="message-id">{this.state.SBmessage}</span>}
+                />
             </div>
         )
   }
