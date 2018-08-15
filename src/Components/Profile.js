@@ -92,7 +92,7 @@ class Profile extends Component {
     }
 
     render() {
-        const { classes, user, taskList, group: { admin, title } } = this.props;
+        const { classes, user, taskList, group: { admin, title, id } } = this.props;
         if(!this.props.user.id){
             this.props.history.push('/')
             return <div></div>
@@ -108,7 +108,7 @@ class Profile extends Component {
                         <Button className={classes.logout} variant="outlined" component={Link} to="/" onClick={this.logout} color="secondary">Logout</Button>
                     </CardContent>
                 </Card>
-                {user.invited.isInvited ? this.renderInviteRequest(admin, title) : <div></div>}
+                {user.invited.isInvited && id === user.invited.groupid ? this.renderInviteRequest(admin, title) : <div></div>}
                 <Card className={classes.myTodosCard}>
                     <CardContent>
                         <Typography variant="headline" component="h1">Private todos:</Typography>

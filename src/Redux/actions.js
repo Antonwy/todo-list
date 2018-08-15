@@ -165,11 +165,8 @@ export const cancelInvite = (id, name, callback) => (dispatch) => {
     .catch(err => console.log(err))
 }
 
-export const deleteGroup = (id, members, callback) => (dispatch) => {
-    axios.put(`${ROOT_URL}/teams/delete`, {
-        id: id,
-        members: members,
-    })
+export const deleteGroup = (id, callback) => (dispatch) => {
+    axios.delete(`${ROOT_URL}/teams/delete/${id}`)
     .then(data => {
         callback();
     })

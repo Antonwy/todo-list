@@ -121,10 +121,10 @@ class GroupTasks extends Component {
 
     onDeleteGroup = (e) => {
         e.preventDefault();
-        const { group: {id, members}, deleteGroup, user } = this.props;
-        deleteGroup(id, members, () => {
+        const { group: {id}, deleteGroup, user, getUser, history } = this.props;
+        deleteGroup(id, () => {
             getUser(user.id, () => {
-                console.log("deleted!")
+                history.push('/createGroup')
             })
         })
     }   
@@ -201,4 +201,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default withStyles(styles)(connect(mapStateToProps, { getGroup, getGroupTasks, addListItem, deleteGroup })(GroupTasks));
+export default withStyles(styles)(connect(mapStateToProps, { getGroup, getGroupTasks, addListItem, deleteGroup, getUser })(GroupTasks));
