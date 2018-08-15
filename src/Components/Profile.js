@@ -4,14 +4,22 @@ import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import TodoListItem from './TodoListItem';
-import { logoutUser, getPrivateTasks } from '../Redux/actions'
+import { logoutUser, getPrivateTasks, getUser, getGroup, acceptInvite, cancelInvite } from '../Redux/actions'
 
 
 
 class Profile extends Component {
 
     componentDidMount(){
-        this.props.getPrivateTasks(this.props.user.name)
+        const {getPrivateTasks, getUser, user, getGroup} = this.props;
+        getPrivateTasks(user.name)
+        if(user.id){
+            getUser(user.id, () => {
+                if(user.invited.isInvited){
+                    getGroup(user.invited.groupid)
+                }
+            });
+        }
     }
 
     formatTime = (time) => {
@@ -32,13 +40,40 @@ class Profile extends Component {
         : <TodoListItem reload={getPrivateTasks} newOne={false} checked={value.checked} text={value.todo} id={value.id} key={value.id} name={value.name}/>)
     }
 
+    renderInviteRequest = (admin, title) => {
+        const {classes} = this.props;
+        return  <Card style={{marginTop: 20}}>
+                    <CardContent>
+                        <Typography gutterBottom variant="headline" component="h1">New Group invite!</Typography>
+                        <Typography component="p">{`${admin} invited you to join the group ${title}!`}</Typography>
+                        <Button className={classes.inviteButtons} variant="outlined" color="secondary" onClick={this.handleAcceptInvite}>Accept</Button>
+                        <Button className={classes.inviteButtons} variant="outlined" color="secondary" onClick={this.handleCancelInvite}>Cancel</Button>
+                    </CardContent>
+                </Card>
+    }
+
     logout = () => {
         this.props.logoutUser();
     }
 
-    render() {
-        const { classes, user, taskList } = this.props;
+    handleAcceptInvite = (event) => {
+        event.preventDefault();
+        const { group: {id}, user: {name}, acceptInvite, getUser, user } = this.props;
+        acceptInvite(id, name, () => {
+            getUser(user.id)
+        });
+    }
 
+    handleCancelInvite = (event) => {
+        event.preventDefault();
+        const { group: { id }, user: {name}, cancelInvite, getUser, user } = this.props;
+        cancelInvite(id, name, () => {
+            getUser(user.id);
+        })
+    }
+
+    render() {
+        const { classes, user, taskList, group: { admin, title } } = this.props;
         if(!this.props.user.id){
             this.props.history.push('/')
             return <div></div>
@@ -54,6 +89,7 @@ class Profile extends Component {
                         <Button className={classes.logout} variant="outlined" component={Link} to="/" onClick={this.logout} color="secondary">Logout</Button>
                     </CardContent>
                 </Card>
+                {user.invited.isInvited ? this.renderInviteRequest(admin, title) : <div></div>}
                 <Card className={classes.myTodosCard}>
                     <CardContent>
                         <Typography variant="headline" component="h1">Private todos:</Typography>
@@ -98,14 +134,19 @@ const styles = theme => ({
       },
       logout: {
         marginTop: 20
+      },
+      inviteButtons: {
+          marginRight: 20, 
+          marginTop: 20
       }
 })
 
 const mapStateToProps = state => {
     return{
         user: state.user,
-        taskList: state.tasks.private
+        taskList: state.tasks.private,
+        group: state.group
     }
 }
 
-export default connect(mapStateToProps, { logoutUser, getPrivateTasks })(withStyles(styles)(Profile));
+export default connect(mapStateToProps, { logoutUser, getPrivateTasks, getUser, getGroup, acceptInvite, cancelInvite })(withStyles(styles)(Profile));

@@ -62,12 +62,12 @@ class GroupTasks extends Component {
 
         if(!user.id){
            return history.push('/')
-        }else if(user.groupinfo.groupid === 'undefined'){
+        }else if(user.groupid === 0){
            return history.push('/createGroup')
         }
         
-        getGroup(user.groupinfo.groupid);
-        getGroupTasks(user.groupinfo.groupid);
+        getGroup(user.groupid);
+        getGroupTasks(user.groupid);
         
         this.setState({
             cardAnimation: true

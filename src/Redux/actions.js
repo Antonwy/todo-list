@@ -147,3 +147,21 @@ export const getGroupTasks = (groupid) => (dispatch) => {
         .catch(err => console.log(err))
 }
 
+export const acceptInvite = (id, name, callback) => (dispatch) => {
+    axios.put(`${ROOT_URL}/teams/members/new`, {
+        id: id, 
+        name: name
+    })
+    .then(data => {callback()})
+    .catch(err => console.log(err))
+}
+
+export const cancelInvite = (id, name, callback) => (dispatch) => {
+    axios.put(`${ROOT_URL}/teams/members/cancel`, {
+        id: id, 
+        name: name
+    })
+    .then(data => {callback()})
+    .catch(err => console.log(err))
+}
+

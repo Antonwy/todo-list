@@ -45,7 +45,7 @@ export const allUser = (state=[], action) => {
 export const groupInfo = (state={}, action) => {
     switch (action.type) {
         case CREATE_GROUP:
-            return action.payload[0]
+            return action.payload
         case GET_GROUP:
             return action.payload[0]
         default:
